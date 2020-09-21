@@ -19,6 +19,10 @@ class CatUpdate(UpdateView):
         self.object.save()
         return HttpResponseRedirect('/cats/'+str(self.object.pk))
 
+class CatDelete(DeleteView):
+    model = Cat
+    success_url = '/cats'
+
 def index(request):
     return render(request, 'index.html')
 
