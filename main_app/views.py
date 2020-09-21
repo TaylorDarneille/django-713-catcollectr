@@ -2,13 +2,27 @@ from django.shortcuts import render
 from .models import Cat
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect
+from django.contrib.auth.models import User
 
 # Create your views (these are like your controller actions) here.
+
+def profile(request, username):
+    user = User.objects.get(username=username)
+    cats = Cat.objects.filter(user=user)
+    return render(request, 'profile.html', {'username': username, 'cats': cats})
+
 # django will make a create cat form for us!
 class CatCreate(CreateView):
     model = Cat
     fields = '__all__'
     success_url = '/cats/'
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        print('!!!!! SELF.OBJECT:', self.object)
+        self.object.user = self.request.user
+        self.object.save()
+        return HttpResponseRedirect('/cats')
 
 class CatUpdate(UpdateView):
     model = Cat
