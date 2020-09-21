@@ -7,7 +7,9 @@
         <a href="/cats/{{cat.id}}">
             <p>Name: {{ cat.name }}</p>
         </a>
-
+        <a href="/user/{{cat.user.username}}">
+            <p>Adopted By: {{cat.user.username}}</p>
+        </a>
         {% if cat.age > 0 %}
             <p>Age: {{ cat.age }}</p>
         {% else %}
