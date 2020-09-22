@@ -3,7 +3,7 @@ from .models import Cat
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 ########### USER #############
@@ -28,10 +28,22 @@ def login_view(request):
         form = AuthenticationForm()
         return render(request, 'login.html', {'form': form})
 
+def logout_view(request):
+    logout(request)
+    return HttpResponseRedirect('/cats')
+
+def signup_view(request):
+    if request.method == 'POST':
+        print('posting data')
+        pass
+    else:
+        form = UserCreationForm()
+        return render(request, 'signup.html', {'form': form})
+
 def profile(request, username):
     user = User.objects.get(username=username)
     cats = Cat.objects.filter(user=user)
-    return render(request, 'profile.html', {'username': username, 'cats': cats})
+    return render(request, 'profile.html', {'username': username,'cats': cats})
 
 ############# CATS ###############
 
