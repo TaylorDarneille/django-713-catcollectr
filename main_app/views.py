@@ -1,13 +1,12 @@
 from django.shortcuts import render
 from .models import Cat
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse
 from django.contrib.auth.models import User
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.contrib.auth import authenticate, login, logout
 
 ########### USER #############
-
 def login_view(request):
     if request.method == 'POST':
         # try to log the user in
@@ -34,8 +33,13 @@ def logout_view(request):
 
 def signup_view(request):
     if request.method == 'POST':
-        print('posting data')
-        pass
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)
+            return HttpResponseRedirect('/user/'+str(user))
+        else:
+            return HttpResponse('<h1>Try Again</h1>')
     else:
         form = UserCreationForm()
         return render(request, 'signup.html', {'form': form})
