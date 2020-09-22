@@ -13,4 +13,11 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('signup/', views.signup_view, name='signup'),
+    path('cattoys/', views.cattoys_index, name='cattoys_index'),
+    path('cattoys/<int:cattoy_id>', views.cattoys_show, name='cattoys_show'),
+    path('cattoys/create/', views.CatToyCreate.as_view(), name='cattoys_create'),
+    path('cattoys/<int:pk>/update/', views.CatToyUpdate.as_view(), name='cattoys_update'),
+    path('cattoys/<int:pk>/delete/', views.CatToyDelete.as_view(), name='cattoys_delete'),
+    path('cats/<int:cat_id>/assoc_toy/<int:toy_id>', views.assoc_toy, name='assoc_toy'),
+    path('cats/<int:cat_id>/unassoc_toy/<int:toy_id>', views.unassoc_toy, name='unassoc_toy'),
 ]
